@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="!listFetched">
+      {{ errorMessage }}
+    </div>
     <table class="table table-striped" v-if="listFetched">
       <thead>
         <tr>
@@ -21,7 +24,12 @@
           </td>
           <td>{{ task.timeSpent }}</td>
           <td>{{ task.expectedTime }}</td>
-          <td><a @click="deleteTask(task.id)">delete</a></td>
+          <td>
+            <a class="deleteLink" @click="deleteTask(task.id, index)">delete</a>
+          </td>
+          <td>
+            <a class="deleteLink" @click="editTask(task)">Edit</a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -32,6 +40,7 @@
 export default {
   data() {
     return {
+      errorMessage: "fetching userList",
       tasks: null,
       listFetched: false
     };
@@ -40,8 +49,27 @@ export default {
     convertDate(someDate) {
       return new Date(someDate.match(/\d+/)[0] * 1).toString().substring(0, 16);
     },
-    deleteTask(taskId) {
-      this.$store.dispatch("deleteTask", taskId);
+    deleteTask(taskId, index) {
+      this.$store
+        .dispatch("deleteTask", taskId)
+        .then(response => {
+          if (response.isDeleted === true) {
+            this.tasks.splice(index, 1);
+            if (this.tasks.length === 0) {
+              this.message = "No tasks found for this user";
+            }
+            alert("deleted successfully");
+          } else {
+            alert(response.message);
+          }
+        })
+        .catch(error => {
+          alert(error);
+        });
+    },
+    editTask(task) {
+      this.$store.dispatch("setTaskToEdit", task);
+      this.$router.push("/edittask");
     }
   },
   mounted() {
@@ -51,15 +79,19 @@ export default {
       .then(response => {
         if (response.isUserTasksFetched === true) {
           const userTasks = this.$store.getters.userTasks;
-          this.tasks=userTasks;
+          this.tasks = userTasks;
           this.listFetched = true;
         } else {
-          alert(response.message);
+          this.errorMessage = response.message;
         }
       })
       .catch(error => {
-        alert(error);
+        this.errorMessage = error;
       });
   }
 };
 </script>
+
+<style scoped>
+@import "./../styles/ReportTableStyle.css";
+</style>

@@ -32,9 +32,10 @@ export default {
       .then(response => {
         if (response.isTaskCategoriesFetched === true) {
           const tempCategories = [];
-          this.$store.getters.taskCategories.forEach(category => {
-            tempCategories.push(category.categoryName);
-          });
+          const taskCategories = this.$store.getters.taskCategories;
+          for (let index = 0; index < taskCategories.length; ++index) {
+            tempCategories.push(taskCategories[index].categoryName);
+          }
           this.categories = tempCategories;
         } else {
           alert(response.message);

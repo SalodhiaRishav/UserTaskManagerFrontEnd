@@ -3,6 +3,7 @@ import ReportChart from "@/components/ReportChart.vue";
 import ReportTable from "@/components/ReportTable.vue";
 import TaskEntry from "@/components/TaskEntry.vue";
 import RegisterUser from "@/components/RegisterUser.vue";
+import EditTask from "@/components/EditTask.vue";
 
 export const routes = [
   {
@@ -12,6 +13,10 @@ export const routes = [
   {
     path: "/register",
     component: RegisterUser
+  },
+  {
+    path: "/edittask",
+    component: EditTask
   },
   {
     path: "/chart",
