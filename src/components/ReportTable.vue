@@ -73,7 +73,7 @@ export default {
     }
   },
   mounted() {
-    let userId = sessionStorage.getItem("id");
+    const userId = sessionStorage.getItem("id");
     this.$store
       .dispatch("setUserTasks", userId)
       .then(response => {

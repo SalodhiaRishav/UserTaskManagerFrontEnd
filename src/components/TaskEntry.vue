@@ -119,11 +119,8 @@ export default {
         return;
       } else {
         this.task.userId = userId;
-        const posttask = {
-          Task: this.task
-        };
         this.$store
-          .dispatch("postNewTask", posttask)
+          .dispatch("postNewTask", {Task:posttask})
           .then(response => {
             if (response.isTaskAddedSuccessfully === true) {
               this.clearTask();

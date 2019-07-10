@@ -129,26 +129,6 @@ export default {
           alert(error);
         });
     }
-
-    //     this.task.userId = userId;
-    //     const posttask = {
-    //       Task: this.taskToEdit
-    //     }
-    //     this.$store
-    //       .dispatch("postNewTask", posttask)
-    //       .then(response => {
-    //         if (response.isTaskAddedSuccessfully === true) {
-    //           this.clearTask();
-    //         } else {
-    //           alert(response.message);
-    //         }
-    //       })
-    //       .catch(error => {
-    //         alert(error);
-    //       });
-    //     console.log(this.taskToEdit)
-    //   }
-    // }
   }
 };
 </script>

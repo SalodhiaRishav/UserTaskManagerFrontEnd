@@ -26,7 +26,6 @@ export default {
     }
   }),
   mounted() {
-    //TODO directly from store
     this.$store
       .dispatch("getTaskCategories")
       .then(response => {
@@ -61,7 +60,7 @@ export default {
               ).length;
               categoryCount.push(count);
             });
-            let chartData = {
+            const chartData = {
               labels: this.categories,
               datasets: [
                 {
