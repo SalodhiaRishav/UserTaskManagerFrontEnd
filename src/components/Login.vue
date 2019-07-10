@@ -63,7 +63,6 @@ export default {
           if (response.isLogin === true) {
             this.$store.dispatch("changeLoginStatus", true);
             const loginedUser = this.$store.getters.loginedUser;
-            sessionStorage.setItem("id", loginedUser.id);
             this.$router.push("/table");
           } else {
             alert(response.message);

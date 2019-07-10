@@ -113,7 +113,7 @@ export default {
         (this.task.userStory = "");
     },
     submit() {
-      const userId = sessionStorage.getItem("id");
+      const userId =this.$store.getters.loginedUser.id;
       if (userId === null) {
         alert("please login first");
         return;
