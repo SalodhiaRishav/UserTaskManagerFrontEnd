@@ -37,11 +37,11 @@ export default {
           });
           this.categories = tempCategories;
         } else {
-          alert(response.error);
+          alert(response.message);
         }
       })
       .catch(error => {
-        alert(error.error);
+        alert(error);
       });
     this.drawBarGraph();
   },
@@ -51,7 +51,7 @@ export default {
       this.$store
         .dispatch("setUserTasks", userId)
         .then(response => {
-          if (response.dataFetched === true) {
+          if (response.isUserTasksFetched === true) {
             const userTaskArray = this.$store.getters.userTasks;
             const categoryCount = [];
             this.categories.forEach(function(category) {
@@ -73,11 +73,11 @@ export default {
             this.chartdata = chartData;
             this.renderChart(this.chartdata, this.options);
           } else {
-            alert(response.error);
+            alert(response.message);
           }
         })
         .catch(error => {
-          alert(error.error);
+          alert(error);
         });
     }
   }

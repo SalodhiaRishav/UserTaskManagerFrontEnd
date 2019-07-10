@@ -1,20 +1,27 @@
-export const beforeLoginHeaderLinks = [
+export const headerLinks = [
   {
-    LinkRoute: "/login",
-    DisplayName: "Login"
-  }
-];
-export const afterLoginHeaderLinks = [
-  {
-    LinkRoute: "/table",
-    DisplayName: "Table"
+    linkRoute: "/login",
+    displayName: "Login",
+    displayAfterLogin: true
   },
   {
-    LinkRoute: "/task",
-    DisplayName: "New Task"
+    linkRoute: "/register",
+    displayName: "Register User",
+    displayAfterLogin: true
   },
   {
-    LinkRoute: "/chart",
-    DisplayName: "Chart"
+    linkRoute: "/table",
+    displayName: "Table",
+    displayAfterLogin: true
+  },
+  {
+    linkRoute: "/task",
+    displayName: "New Task",
+    displayAfterLogin: true
+  },
+  {
+    linkRoute: "/chart",
+    displayName: "Chart",
+    displayAfterLogin: true
   }
 ];

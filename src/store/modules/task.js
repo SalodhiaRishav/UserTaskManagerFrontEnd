@@ -35,17 +35,17 @@ const actions = {
         .then(response => {
           if (response.data.success === true) {
             context.commit("changeNewTaskAddedStatus", true);
-            resolve({ isAddedSuccessfully: true });
+            resolve({ isTaskAddedSuccessfully: true });
           } else {
-            reject({
-              isAddedSuccessfully: false,
-              error: response.data.message
+            resolve({
+              isTaskAddedSuccessfully: false,
+              message: response.data.message
             });
           }
         })
         .catch(error => {
           context.commit("changeNewTaskAddedStatus", false);
-          reject({ isAddedSuccessfully: false, error: error });
+          reject(error);
         });
     });
   },
@@ -56,17 +56,30 @@ const actions = {
         .get(url)
         .then(response => {
           if (response.data.success === true) {
-            context.commit("setUserTasks", response.data.data);
-            resolve({ dataFetched: true });
+            const userTasks=response.data.data;
+            context.commit("setUserTasks",userTasks);
+            resolve({ isUserTasksFetched: true });
           } else {
-            reject({ dataFeteched: false, error: response.message });
+            resolve({ isUserTasksFetched: false, message: response.data.message });
           }
         })
         .catch(error => {
-          reject({ dataFeteched: false, error: error });
+          reject(error);
         });
     });
   }
+  // deleteTask: (context, taskId) => {
+  //   const url = "http://localhost:56329/task/" + taskId;
+  //   axios
+  //     .post(url, taskId, {
+  //       headers: {
+  //         "Content-Type": "application/x-www-form-urlencoded"
+  //       }
+  //     })
+  //     .then(response => {
+  //       alert(response);
+  //     });
+  // }
 };
 
 export default {

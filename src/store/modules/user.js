@@ -37,11 +37,35 @@ const actions = {
             context.commit("setLoginedUser", response.data.data);
             resolve({ isLogin: true });
           } else {
-            reject({ isLogin: false, error: response.data.message });
+            resolve({ isLogin: false, message: response.data.message });
           }
         })
         .catch(error => {
-          reject({ isLogin: false, error: error });
+          reject(error);
+        });
+    });
+  },
+  registerUser: (context, newUser) => {
+    return new Promise((resolve, reject) => {
+      const url = "http://localhost:56329/json/reply/CreateUserRequestDTO";
+      axios
+        .post(url, newUser)
+        .then(response => {
+          if (response.data.success === true) {
+            context.commit("setLoginedUser", response.data.data);
+            resolve({
+              isUserRegistered: true,
+              registeredUser: response.data.data
+            });
+          } else {
+            resolve({
+              isUserRegistered: false,
+              message: response.data.message
+            });
+          }
+        })
+        .catch(error => {
+          reject(error);
         });
     });
   }

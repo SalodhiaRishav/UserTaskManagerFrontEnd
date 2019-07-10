@@ -4,36 +4,19 @@
       <span class="navbar-brand">Task Manger</span>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <div v-if="!isLogined">
-            <router-link
-              v-for="(currentLink, index) in beforeLoginHeaderLinks"
-              :to="currentLink.LinkRoute"
-              activeClass="active"
-              class="nav-item"
-              tag="li"
-              :key="index"
-            >
-              <a class="nav-link">{{ currentLink.DisplayName }}</a>
-            </router-link>
-          </div>
-          <div v-if="isLogined">
-            <router-link
-              v-for="(currentLink, index) in afterLoginHeaderLinks"
-              :to="currentLink.LinkRoute"
-              activeClass="active"
-              class="nav-item"
-              tag="li"
-              style="display:inline"
-              :key="index"
-            >
-              <a class="nav-link">{{ currentLink.DisplayName }}</a>
-            </router-link>
-            <li class="nav-item">
-              <a class="nav-link" style="display:inline" @click="logout"
-                >LogOut</a
-              >
-            </li>
-          </div>
+          <router-link
+            v-for="(currentLink, index) in headerLinkItems"
+            :to="currentLink.linkRoute"
+            activeClass="active"
+            class="nav-item"
+            tag="li"
+            :key="index"
+          >
+            <a class="nav-link">{{ currentLink.displayName }}</a>
+          </router-link>
+          <li class="nav-item" v-if="isLogined">
+            <a class="nav-link" @click="logout">Logout</a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -41,21 +24,30 @@
 </template>
 
 <script>
-import {
-  beforeLoginHeaderLinks,
-  afterLoginHeaderLinks
-} from "@/mockdata/headerLinks";
+import { headerLinks } from "@/mockdata/headerLinks";
 
 export default {
-  data() {
-    return {
-      beforeLoginHeaderLinks: beforeLoginHeaderLinks,
-      afterLoginHeaderLinks: afterLoginHeaderLinks
-    };
-  },
   computed: {
     isLogined() {
       return this.$store.getters.loginStatus;
+    },
+    headerLinkItems() {
+      const headerLinkItems = [];
+      if (this.isLogined === true) {
+        headerLinks.forEach(headerLink => {
+          if (headerLink.displayAfterLogin === true) {
+            headerLinkItems.push(headerLink);
+          }
+        });
+        return headerLinkItems;
+      } else {
+        headerLinks.forEach(headerLink => {
+          if (headerLink.displayAfterLogin === false) {
+            headerLinkItems.push(headerLink);
+          }
+        });
+        return headerLinkItems;
+      }
     }
   },
   methods: {

@@ -2,15 +2,16 @@ import Login from "@/components/Login.vue";
 import ReportChart from "@/components/ReportChart.vue";
 import ReportTable from "@/components/ReportTable.vue";
 import TaskEntry from "@/components/TaskEntry.vue";
+import RegisterUser from "@/components/RegisterUser.vue";
 
 export const routes = [
   {
-    path: "/login",
-    component: Login
-  },
-  {
     path: "/table",
     component: ReportTable
+  },
+  {
+    path: "/register",
+    component: RegisterUser
   },
   {
     path: "/chart",
@@ -19,6 +20,10 @@ export const routes = [
   {
     path: "/task",
     component: TaskEntry
+  },
+  {
+    path: "/login",
+    component: Login
   },
   {
     path: "/",

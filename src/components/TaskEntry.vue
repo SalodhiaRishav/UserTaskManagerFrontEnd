@@ -97,11 +97,11 @@ export default {
         if (response.isTaskCategoriesFetched === true) {
           this.categories = this.$store.getters.taskCategories;
         } else {
-          alert(response.error);
+          alert(response.message);
         }
       })
       .catch(error => {
-        alert(error.error);
+        alert(error);
       });
   },
   methods: {
@@ -125,14 +125,14 @@ export default {
         this.$store
           .dispatch("postNewTask", posttask)
           .then(response => {
-            if (response.isAddedSuccessfully === true) {
+            if (response.isTaskAddedSuccessfully === true) {
               this.clearTask();
             } else {
-              alert(response.error);
+              alert(response.message);
             }
           })
           .catch(error => {
-            alert(error.error);
+            alert(error);
           });
       }
     }

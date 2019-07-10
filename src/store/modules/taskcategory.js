@@ -27,14 +27,14 @@ const actions = {
             context.commit("setTaskCategories", response.data.data);
             resolve({ isTaskCategoriesFetched: true });
           } else {
-            reject({
+            resolve({
               isTaskCategoriesFetched: false,
-              error: response.data.message
+              message: response.data.message
             });
           }
         })
         .catch(error => {
-          reject({ isTaskCategoriesFetched: false, error: error });
+          reject(error);
         });
     });
   }

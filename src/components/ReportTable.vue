@@ -17,14 +17,11 @@
           <td>{{ task.taskCategory.categoryName }}</td>
           <td>{{ task.userStory }}</td>
           <td>
-            {{
-              new Date(task.taskDate.match(/\d+/)[0] * 1)
-                .toString()
-                .substring(0, 16)
-            }}
+            {{ convertDate(task.taskDate) }}
           </td>
           <td>{{ task.timeSpent }}</td>
           <td>{{ task.expectedTime }}</td>
+          <td><a @click="deleteTask(task.id)">delete</a></td>
         </tr>
       </tbody>
     </table>
@@ -39,21 +36,29 @@ export default {
       listFetched: false
     };
   },
-  method: {},
+  methods: {
+    convertDate(someDate) {
+      return new Date(someDate.match(/\d+/)[0] * 1).toString().substring(0, 16);
+    },
+    deleteTask(taskId) {
+      this.$store.dispatch("deleteTask", taskId);
+    }
+  },
   mounted() {
     let userId = sessionStorage.getItem("id");
     this.$store
       .dispatch("setUserTasks", userId)
       .then(response => {
-        if (response.dataFetched === true) {
-          this.tasks = this.$store.getters.userTasks;
+        if (response.isUserTasksFetched === true) {
+          const userTasks = this.$store.getters.userTasks;
+          this.tasks=userTasks;
           this.listFetched = true;
         } else {
-          alert(response.error);
+          alert(response.message);
         }
       })
       .catch(error => {
-        alert(error.error);
+        alert(error);
       });
   }
 };
