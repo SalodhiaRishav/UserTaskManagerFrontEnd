@@ -12,13 +12,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(task, index) in tasks" :key="index"> 
-          <th scope="row">{{index+1}}</th>
-          <td>{{task.TaskCategory.CategoryName}}</td>
-          <td>{{task.UserStory}}</td>
-          <td>{{(new Date(task.TaskDate.match(/\d+/)[0] * 1)).toString().substring(0,16)}}</td>
-          <td>{{task.TimeSpent}}</td>
-          <td>{{task.ExpectedTime}}</td>
+        <tr v-for="(task, index) in tasks" :key="index">
+          <th scope="row">{{ index + 1 }}</th>
+          <td>{{ task.taskCategory.categoryName }}</td>
+          <td>{{ task.userStory }}</td>
+          <td>
+            {{
+              new Date(task.taskDate.match(/\d+/)[0] * 1)
+                .toString()
+                .substring(0, 16)
+            }}
+          </td>
+          <td>{{ task.timeSpent }}</td>
+          <td>{{ task.expectedTime }}</td>
         </tr>
       </tbody>
     </table>
@@ -26,8 +32,6 @@
 </template>
 
 <script>
-
-
 export default {
   data() {
     return {
@@ -35,20 +39,22 @@ export default {
       listFetched: false
     };
   },
-  method:{
-   
-  },
-  created() {
+  method: {},
+  mounted() {
     let userId = sessionStorage.getItem("id");
-    this.$store.dispatch("setUserTasks", userId).then(data => {
-      if (data) {
-        this.tasks = this.$store.getters.userTasks;
-        this.listFetched = true;
-      }
-    });
+    this.$store
+      .dispatch("setUserTasks", userId)
+      .then(response => {
+        if (response.dataFetched === true) {
+          this.tasks = this.$store.getters.userTasks;
+          this.listFetched = true;
+        } else {
+          alert(response.error);
+        }
+      })
+      .catch(error => {
+        alert(error.error);
+      });
   }
 };
 </script>
-
-<style>
-</style>

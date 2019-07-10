@@ -4,15 +4,26 @@
       <div class="row">
         <div class="col-6 mb-3">
           <label for="category">Task Domain</label>
-          <select v-model="task.taskcategoryid" id="category">
-            <option v-for="(category,index) in categories" :key=index  :value="category.ID">{{category.CategoryName}}</option>
+          <select v-model="task.taskCategoryId" id="category">
+            <option
+              v-for="(category, index) in categories"
+              :key="index"
+              :value="category.id"
+              >{{ category.categoryName }}</option
+            >
           </select>
         </div>
       </div>
       <div class="row">
         <div class="col-6 mb-3">
           <label for="userStory">User Story</label>
-          <input type="text" class="form-control" id="userStory" required v-model="task.userstory">
+          <input
+            type="text"
+            class="form-control"
+            id="userStory"
+            required
+            v-model="task.userStory"
+          />
         </div>
       </div>
       <div class="row">
@@ -23,8 +34,8 @@
             class="form-control"
             id="timeSpent"
             required
-            v-model="task.timespent"
-          >
+            v-model="task.timeSpent"
+          />
         </div>
       </div>
       <div class="row">
@@ -35,14 +46,20 @@
             class="form-control"
             id="expectedTime"
             required
-            v-model="task.expectedtime"
-          >
+            v-model="task.expectedTime"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col-6 mb-3">
           <label for="taskDate">Task Date</label>
-          <input type="date" class="form-control" id="taskDate" required v-model="task.taskdate">
+          <input
+            type="date"
+            class="form-control"
+            id="taskDate"
+            required
+            v-model="task.taskDate"
+          />
         </div>
       </div>
       <div class="row">
@@ -50,68 +67,75 @@
           class="col-6 btn btn-lg btn-primary btn-block"
           type="submit"
           @click.prevent="submit"
-        >Add New Task</button>
+        >
+          Add New Task
+        </button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       categories: null,
       task: {
-        taskdate: "",
-        taskcategoryid: null,
-        expectedtime: null,
-        timespent: null,
-        userid: null,
-        userstory: ""
+        taskDate: "",
+        taskCategoryId: null,
+        expectedTime: null,
+        timeSpent: null,
+        userId: null,
+        userStory: ""
       }
     };
   },
-  created() {
-      this.$store.dispatch("getTaskCategories").then(data => {
-        if(data){
-          this.categories= this.$store.getters.taskcategories        
+  mounted() {
+    this.$store
+      .dispatch("getTaskCategories")
+      .then(response => {
+        if (response.isTaskCategoriesFetched === true) {
+          this.categories = this.$store.getters.taskCategories;
+        } else {
+          alert(response.error);
         }
       })
+      .catch(error => {
+        alert(error.error);
+      });
   },
   methods: {
     clearTask() {
-      (this.task.taskdate = ""),
-        (this.task.taskcategoryid = null),
-        (this.task.expectedtime = null),
-        (this.task.timespent = null),
-        (this.task.userstory = "");
+      (this.task.taskDate = ""),
+        (this.task.taskCategoryId = null),
+        (this.task.expectedTime = null),
+        (this.task.timeSpent = null),
+        (this.task.userStory = "");
     },
     submit() {
-      
-      let userId = sessionStorage.getItem("id");
+      const userId = sessionStorage.getItem("id");
       if (userId === null) {
+        alert("please login first");
         return;
       } else {
-        this.task.userid = userId;      
-        let posttask={
-          "Task":this.task
-        }
+        this.task.userId = userId;
+        const posttask = {
+          Task: this.task
+        };
         this.$store
           .dispatch("postNewTask", posttask)
-          .then((data) => {
-            if(data){
-            this.clearTask();
+          .then(response => {
+            if (response.isAddedSuccessfully === true) {
+              this.clearTask();
+            } else {
+              alert(response.error);
             }
           })
-          .catch(err => {
-            alert(err);
+          .catch(error => {
+            alert(error.error);
           });
-     }
+      }
     }
   }
 };
 </script>
-
-<style>
-</style>

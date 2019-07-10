@@ -5,8 +5,8 @@ export default {
   extends: Bar,
   Line,
   data: () => ({
-      userTasks:null,
-    categories:null,
+    userTasks: null,
+    categories: null,
     chartData: null,
     options: {
       title: {
@@ -28,41 +28,45 @@ export default {
       maintainAspectRatio: false
     }
   }),
-  created(){
-      this.$store.dispatch("getTaskCategories").then(data => {
-        if(data){
-          let tempcategoryarray=[];
-           this.$store.getters.taskcategories.forEach((category)=>{
-            tempcategoryarray.push(category.CategoryName)
-           })
-           this.categories=tempcategoryarray;                  
-        }
-      })
+  mounted() {
+    this.$store.dispatch("getTaskCategories").then(response => {
+      if (response.isTaskCategoriesFetched === true) {
+        const tempCategories = [];
+        this.$store.getters.taskCategories.forEach(category => {
+          tempCategories.push(category.categoryName);
+        });
+        this.categories = tempCategories;
+      } else {
+        alert(response.error);
+      }
+    }),
+      this.drawLineGraph();
   },
   methods: {
     drawLineGraph() {
       const userId = sessionStorage.getItem("id");
-        
-      this.$store.dispatch("setUserTasks", userId).then(data => {
-          if(data){
-              this.userTasks=this.$store.getters.userTasks;
-          }
-        let expectedTimeArray = [];
-        let timeSpentArray = [];
+      this.$store.dispatch("setUserTasks", userId).then(response => {
+        if (response.dataFetched === true) {
+          this.userTasks = this.$store.getters.userTasks;
+        } else {
+          alert(response.error);
+        }
+        const expectedTimeArray = [];
+        const timeSpentArray = [];
         this.categories.forEach(category => {
-          let tasks = this.userTasks.filter(
-            task => task.TaskCategory.CategoryName === category
+          const tasks = this.userTasks.filter(
+            task => task.taskCategory.categoryName === category
           );
           let expectedTimeCount = 0;
           let timeSpentCount = 0;
           tasks.forEach(task => {
-            timeSpentCount += task.TimeSpent;
-            expectedTimeCount += task.ExpectedTime;
+            timeSpentCount += task.timeSpent;
+            expectedTimeCount += task.expectedTime;
           });
           expectedTimeArray.push(expectedTimeCount);
           timeSpentArray.push(timeSpentCount);
         });
-        let dataChart = {
+        const dataChart = {
           labels: this.categories,
           datasets: [
             {
@@ -84,20 +88,6 @@ export default {
         this.renderChart(dataChart, this.options);
       });
     }
-  },
-
-  mounted() {
-    this.drawLineGraph();
   }
 };
 </script>
-
-<style scoped>
-.small {
-  /* max-width: 600px; */
-  margin: 150px auto;
-}
-</style>
-
-
-

@@ -2,8 +2,6 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <span class="navbar-brand">Task Manger</span>
-     
-       
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <div v-if="!isLogined">
@@ -12,14 +10,15 @@
               :to="currentLink.LinkRoute"
               activeClass="active"
               class="nav-item"
-              tag="li" :key="index"
+              tag="li"
+              :key="index"
             >
-              <a class="nav-link">{{currentLink.DisplayName}}</a>
+              <a class="nav-link">{{ currentLink.DisplayName }}</a>
             </router-link>
           </div>
           <div v-if="isLogined">
             <router-link
-              v-for="(currentLink,index) in afterLoginHeaderLinks"
+              v-for="(currentLink, index) in afterLoginHeaderLinks"
               :to="currentLink.LinkRoute"
               activeClass="active"
               class="nav-item"
@@ -27,10 +26,12 @@
               style="display:inline"
               :key="index"
             >
-              <a class="nav-link">{{currentLink.DisplayName}}</a>
+              <a class="nav-link">{{ currentLink.DisplayName }}</a>
             </router-link>
             <li class="nav-item">
-              <a class="nav-link" style="display:inline" @click="logout">LogOut</a>
+              <a class="nav-link" style="display:inline" @click="logout"
+                >LogOut</a
+              >
             </li>
           </div>
         </ul>
@@ -40,8 +41,10 @@
 </template>
 
 <script>
-import { beforeLoginHeaderLinks } from "./../data/headerLinks";
-import { afterLoginHeaderLinks } from "./../data/headerLinks";
+import {
+  beforeLoginHeaderLinks,
+  afterLoginHeaderLinks
+} from "@/mockdata/headerLinks";
 
 export default {
   data() {
@@ -50,9 +53,9 @@ export default {
       afterLoginHeaderLinks: afterLoginHeaderLinks
     };
   },
-  computed:{
-    isLogined(){
-      return this.$store.getters.loginStatus
+  computed: {
+    isLogined() {
+      return this.$store.getters.loginStatus;
     }
   },
   methods: {
@@ -64,9 +67,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.nav-link {
-  display: inline;
-}
-</style>

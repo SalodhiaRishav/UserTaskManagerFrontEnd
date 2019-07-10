@@ -7,14 +7,13 @@
       <div class="col">
         <app-Linegraph></app-Linegraph>
       </div>
-      hi this is chart
     </div>
   </div>
 </template>
 
 <script>
-import bargraph from "./bargraph.vue";
-import LineGraph from "./LineGraph.vue";
+import bargraph from "@/components/bargraph.vue";
+import LineGraph from "@/components/LineGraph.vue";
 export default {
   components: {
     appBargraph: bargraph,
@@ -22,6 +21,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

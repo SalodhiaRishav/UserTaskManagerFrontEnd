@@ -22,58 +22,64 @@ export default {
           }
         ]
       },
-      //   responsive: true,
       maintainAspectRatio: false
     }
   }),
-  created(){
-     this.$store.dispatch("getTaskCategories").then(data => {
-        if(data){
-          let tempcategoryarray=[];
-           this.$store.getters.taskcategories.forEach((category)=>{
-            tempcategoryarray.push(category.CategoryName)
-           })
-           this.categories=tempcategoryarray;                  
+  mounted() {
+    //TODO directly from store
+    this.$store
+      .dispatch("getTaskCategories")
+      .then(response => {
+        if (response.isTaskCategoriesFetched === true) {
+          const tempCategories = [];
+          this.$store.getters.taskCategories.forEach(category => {
+            tempCategories.push(category.categoryName);
+          });
+          this.categories = tempCategories;
+        } else {
+          alert(response.error);
         }
       })
+      .catch(error => {
+        alert(error.error);
+      });
+    this.drawBarGraph();
   },
   methods: {
     drawBarGraph() {
       const userId = sessionStorage.getItem("id");
-      this.$store.dispatch("setUserTasks", userId).then(data => {
-        const userTaskArray = this.$store.getters.userTasks;
-        if (data) {
-          this.userTasks = this.$store.getters.userTasks;
-        }
-        let categoryCount = [];
-
-        this.categories.forEach(function(category) {
-          const count = userTaskArray.filter(
-            task => task.TaskCategory.CategoryName === category
-          ).length;
-          categoryCount.push(count);
+      this.$store
+        .dispatch("setUserTasks", userId)
+        .then(response => {
+          if (response.dataFetched === true) {
+            const userTaskArray = this.$store.getters.userTasks;
+            const categoryCount = [];
+            this.categories.forEach(function(category) {
+              const count = userTaskArray.filter(
+                task => task.taskCategory.categoryName === category
+              ).length;
+              categoryCount.push(count);
+            });
+            let chartData = {
+              labels: this.categories,
+              datasets: [
+                {
+                  label: "Categories Data",
+                  backgroundColor: "#f87979",
+                  data: categoryCount
+                }
+              ]
+            };
+            this.chartdata = chartData;
+            this.renderChart(this.chartdata, this.options);
+          } else {
+            alert(response.error);
+          }
+        })
+        .catch(error => {
+          alert(error.error);
         });
-        let chartData = {
-          labels: this.categories,
-          datasets: [
-            {
-              label: "Categories Data",
-              backgroundColor: "#f87979",
-              data: categoryCount
-            }
-          ]
-        };
-        this.chartdata = chartData;
-        this.renderChart(this.chartdata, this.options);
-      });
     }
-  },
-  mounted() {
-    
-    this.drawBarGraph();
   }
 };
 </script>
-
-<style>
-</style>

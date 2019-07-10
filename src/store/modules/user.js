@@ -1,53 +1,55 @@
-import axios from 'axios';
+import axios from "axios";
 
 const state = {
-    users:null,
-    loginStatus: false,
-}
-
-const mutations = {
-    changeLoginStatus: (state, value) => {
-        state.loginStatus = value;
-    },
-    setUsers:(state,users)=>{
-        state.users=users
-    }
-}
-
-const getters = {
-    loginStatus: (state) => {
-        return state.loginStatus;
-    },
-    users:(state)=>{
-        return state.users
-    }
-}
-
-const actions = {
-    changeLoginStatus: (context, value) => {
-        context.commit('changeLoginStatus', value)
-    },
-    getUsers:(context)=>{
-        return new Promise((resolve,reject)=>{
-            const url="http://localhost:56329/user";
-            axios.get(url).then((response)=>{
-                context.commit('setUsers',response.data.Result.Data)
-                resolve({isFetched:true});
-            })
-            .catch((error)=>{
-                reject({isFetched:false,error:error});
-            })
-        })
-        
-    }
-}
-
-export default {
-    state,
-    mutations,
-    getters,
-    actions
+  loginStatus: false,
+  loginedUser: null
 };
 
+const mutations = {
+  changeLoginStatus: (state, value) => {
+    state.loginStatus = value;
+  },
+  setLoginedUser: (state, value) => {
+    state.loginedUser = value;
+  }
+};
 
+const getters = {
+  loginStatus: state => {
+    return state.loginStatus;
+  },
+  loginedUser: state => {
+    return state.loginedUser;
+  }
+};
 
+const actions = {
+  changeLoginStatus: (context, value) => {
+    context.commit("changeLoginStatus", value);
+  },
+  loginUser: (context, loginData) => {
+    return new Promise((resolve, reject) => {
+      const url = "http://localhost:56329/json/reply/LoginUserRequestDTO";
+      axios
+        .post(url, { email: loginData.email, password: loginData.password })
+        .then(response => {
+          if (response.data.success === true) {
+            context.commit("setLoginedUser", response.data.data);
+            resolve({ isLogin: true });
+          } else {
+            reject({ isLogin: false, error: response.data.message });
+          }
+        })
+        .catch(error => {
+          reject({ isLogin: false, error: error });
+        });
+    });
+  }
+};
+
+export default {
+  state,
+  mutations,
+  getters,
+  actions
+};
