@@ -58,39 +58,39 @@ export default {
             this.userTasks = this.$store.getters.userTasks;
             const expectedTimeArray = [];
             const timeSpentArray = [];
-            this.categories.forEach(category => {
+            for (let i = 0; i < this.categories.length; ++i) {
               const tasks = this.userTasks.filter(
-                task => task.taskCategory.categoryName === category
+                task => task.taskCategory.categoryName === this.categories[i]
               );
               let expectedTimeCount = 0;
               let timeSpentCount = 0;
-              tasks.forEach(task => {
-                timeSpentCount += task.timeSpent;
-                expectedTimeCount += task.expectedTime;
-              });
+              for (let j = 0; j < tasks.length; ++j) {
+                timeSpentCount += tasks[j].timeSpent;
+                expectedTimeCount += tasks[j].expectedTime;
+              }
               expectedTimeArray.push(expectedTimeCount);
               timeSpentArray.push(timeSpentCount);
-              const dataChart = {
-                labels: this.categories,
-                datasets: [
-                  {
-                    label: "Expected Time",
-                    type: "line",
-                    data: expectedTimeArray,
-                    borderColor: "#ff0000",
-                    borderWidth: 3
-                  },
-                  {
-                    label: "Time Spent",
-                    type: "bar",
-                    data: timeSpentArray,
-                    borderColor: "#36495d",
-                    borderWidth: 3
-                  }
-                ]
-              };
-              this.renderChart(dataChart, this.options);
-            });
+            }
+            const dataChart = {
+              labels: this.categories,
+              datasets: [
+                {
+                  label: "Expected Time",
+                  type: "line",
+                  data: expectedTimeArray,
+                  borderColor: "#ff0000",
+                  borderWidth: 3
+                },
+                {
+                  label: "Time Spent",
+                  type: "bar",
+                  data: timeSpentArray,
+                  borderColor: "#36495d",
+                  borderWidth: 3
+                }
+              ]
+            };
+            this.renderChart(dataChart, this.options);
           } else {
             alert(response.error);
           }

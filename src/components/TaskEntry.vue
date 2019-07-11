@@ -4,7 +4,12 @@
       <div class="row">
         <div class="col-6 mb-3">
           <label for="category">Task Domain</label>
-          <select v-model="task.taskCategoryId" id="category">
+          <select
+            v-validate="'required'"
+            name="category"
+            v-model="task.taskCategoryId"
+            id="category"
+          >
             <option
               v-for="(category, index) in categories"
               :key="index"
@@ -12,42 +17,52 @@
               >{{ category.categoryName }}</option
             >
           </select>
+          <span class="errorMessage">{{ errors.first("category") }}</span>
         </div>
       </div>
       <div class="row">
         <div class="col-6 mb-3">
           <label for="userStory">User Story</label>
           <input
+            v-validate="'required|min:1|max:200'"
             type="text"
             class="form-control"
             id="userStory"
             required
             v-model="task.userStory"
+            name="userStory"
           />
+          <span class="errorMessage">{{ errors.first("userStory") }}</span>
         </div>
       </div>
       <div class="row">
         <div class="col-6 mb-3">
           <label for="timeSpent">Time Spent</label>
           <input
+            v-validate="'required|numeric|min_value:1'"
             type="number"
             class="form-control"
             id="timeSpent"
             required
             v-model="task.timeSpent"
+            name="timeSpent"
           />
+          <span class="errorMessage">{{ errors.first("timeSpent") }}</span>
         </div>
       </div>
       <div class="row">
         <div class="col-6 mb-3">
           <label for="expectedTime">Expected Time</label>
           <input
+            v-validate="'required|numeric|min_value:1'"
             type="number"
             class="form-control"
             id="expectedTime"
             required
             v-model="task.expectedTime"
+            name="expectedTime"
           />
+          <span class="errorMessage">{{ errors.first("expectedTime") }}</span>
         </div>
       </div>
       <div class="row">

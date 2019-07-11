@@ -10,7 +10,10 @@
             id="firstName"
             required
             v-model="user.firstName"
+            v-validate="'required|min:1|max:20'"
+            name="firstName"
           />
+          <span class="errorMessage">{{ errors.first("firstName") }}</span>
         </div>
       </div>
       <div class="row">
@@ -22,7 +25,10 @@
             id="lastName"
             required
             v-model="user.lastName"
+            v-validate="'required|min:1|max:20'"
+            name="lastName"
           />
+          <span class="errorMessage">{{ errors.first("lastName") }}</span>
         </div>
       </div>
       <div class="row">
@@ -34,7 +40,10 @@
             id="Email"
             required
             v-model="user.email"
+            v-validate="'required|email'"
+            name="email"
           />
+          <span class="errorMessage">{{ errors.first("email") }}</span>
         </div>
       </div>
       <div class="row">
@@ -46,7 +55,10 @@
             id="password"
             required
             v-model="user.password"
+            v-validate="'required|min:1|max:20'"
+            name="password"
           />
+          <span class="errorMessage">{{ errors.first("password") }}</span>
         </div>
       </div>
 

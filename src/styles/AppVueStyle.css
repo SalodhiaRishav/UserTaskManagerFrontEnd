@@ -2,6 +2,15 @@ body {
   padding: 10px;
 }
 
+a{
+  cursor: pointer;
+}
+
+.errorMessage{
+  color: red;
+  font-size: 12px;
+}
+
 #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

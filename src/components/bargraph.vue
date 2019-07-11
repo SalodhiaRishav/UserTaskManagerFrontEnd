@@ -54,12 +54,12 @@ export default {
           if (response.isUserTasksFetched === true) {
             const userTaskArray = this.$store.getters.userTasks;
             const categoryCount = [];
-            this.categories.forEach(function(category) {
+            for (let i = 0; i < this.categories.length; ++i) {
               const count = userTaskArray.filter(
-                task => task.taskCategory.categoryName === category
+                task => task.taskCategory.categoryName === this.categories[i]
               ).length;
               categoryCount.push(count);
-            });
+            }
             const chartData = {
               labels: this.categories,
               datasets: [
