@@ -2,12 +2,12 @@ export const headerLinks = [
   {
     linkRoute: "/login",
     displayName: "Login",
-    displayAfterLogin: true
+    displayAfterLogin: false
   },
   {
     linkRoute: "/register",
     displayName: "Register User",
-    displayAfterLogin: true
+    displayAfterLogin: false
   },
   {
     linkRoute: "/table",

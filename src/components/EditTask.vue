@@ -120,7 +120,7 @@ export default {
         .dispatch("updateTask", { Task: this.task })
         .then(response => {
           if (response.isTaskUpdatedSuccessfully === true) {
-            this.$router.push('/table');
+            this.$router.push("/table");
           } else {
             alert(response.message);
           }

@@ -4,16 +4,15 @@
       <span class="navbar-brand">Task Manger</span>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <router-link
+          <li
+            class="navitem"
             v-for="(currentLink, index) in headerLinkItems"
-            :to="currentLink.linkRoute"
-            activeClass="active"
-            class="nav-item"
-            tag="li"
             :key="index"
           >
-            <a class="nav-link">{{ currentLink.displayName }}</a>
-          </router-link>
+            <a class="nav-link" @click="changeRoute(currentLink.linkRoute)">{{
+              currentLink.displayName
+            }}</a>
+          </li>
           <li class="nav-item" v-if="isLogined">
             <a class="nav-link" @click="logout">Logout</a>
           </li>
@@ -32,30 +31,29 @@ export default {
       return this.$store.getters.loginStatus;
     },
     headerLinkItems() {
-      const headerLinkItems = [];
       if (this.isLogined === true) {
-        headerLinks.forEach(headerLink => {
-          if (headerLink.displayAfterLogin === true) {
-            headerLinkItems.push(headerLink);
-          }
+        return headerLinks.filter(function(headerLink) {
+          return headerLink.displayAfterLogin === true;
         });
-        return headerLinkItems;
       } else {
-        headerLinks.forEach(headerLink => {
-          if (headerLink.displayAfterLogin === false) {
-            headerLinkItems.push(headerLink);
-          }
+        return headerLinks.filter(function(headerLink) {
+          return headerLink.displayAfterLogin === false;
         });
-        return headerLinkItems;
       }
     }
   },
   methods: {
+    changeRoute(routeToPush) {
+      this.$router.push(routeToPush);
+    },
     logout() {
       this.$store.dispatch("changeLoginStatus", false);
-      sessionStorage.removeItem("id");
       this.$router.push("/login");
     }
   }
 };
 </script>
+
+<style scoped>
+@import "./../styles/HeaderStyle.css";
+</style>

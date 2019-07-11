@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     drawLineGraph() {
-      const userId = sessionStorage.getItem("id");
+      const userId = this.$store.getters.loginedUser.id;
       this.$store
         .dispatch("setUserTasks", userId)
         .then(response => {

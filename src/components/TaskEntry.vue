@@ -113,14 +113,14 @@ export default {
         (this.task.userStory = "");
     },
     submit() {
-      const userId =this.$store.getters.loginedUser.id;
+      const userId = this.$store.getters.loginedUser.id;
       if (userId === null) {
         alert("please login first");
         return;
       } else {
         this.task.userId = userId;
         this.$store
-          .dispatch("postNewTask", {Task:posttask})
+          .dispatch("postNewTask", { Task: this.task })
           .then(response => {
             if (response.isTaskAddedSuccessfully === true) {
               this.clearTask();
