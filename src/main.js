@@ -11,6 +11,16 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.fullPath !== "/login" && to.fullPath !== "register") {
+    const isUserLogined = store.getters.loginStatus;
+    if (!isUserLogined) {
+      next("/login");
+    }
+  }
+  next();
+});
+
 new Vue({
   router,
   store,
