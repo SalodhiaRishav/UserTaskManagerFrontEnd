@@ -53,7 +53,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-@import "./../styles/HeaderStyle.css";
-</style>

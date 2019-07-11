@@ -91,7 +91,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-@import "./../styles/ReportTableStyle.css";
-</style>

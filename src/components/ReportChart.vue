@@ -4,7 +4,7 @@
       user tasks are empty..
     </div>
     <div class="row" v-if="isUserTasksAvailable">
-      <div class="col" style="text-align:center">
+      <div class="col">
         <app-bargraph></app-bargraph>
       </div>
       <div class="col">

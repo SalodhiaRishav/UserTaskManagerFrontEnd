@@ -61,7 +61,6 @@
           <span class="errorMessage">{{ errors.first("password") }}</span>
         </div>
       </div>
-
       <div class="row">
         <button
           class="col-6 btn btn-lg btn-primary btn-block"
